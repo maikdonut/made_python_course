@@ -9,7 +9,7 @@ def quad_eq(a,b,c):
         print(f'First root is:{(-b + d**0.5)/(2*a)}')
         print(f'Second root is:{(-b - d**0.5)/(2*a)}')
 
-a = int(input('Enter a:'))  
-b = int(input('Enter b:'))  
-c = int(input('Enter c:'))
+a = float(input('Enter a:'))  
+b = float(input('Enter b:'))  
+c = float(input('Enter c:'))
 quad_eq(a,b,c)
