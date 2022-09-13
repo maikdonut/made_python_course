@@ -10,5 +10,5 @@ for i in nums:
     else:
         odd.append(i)
 assert len(odd) != 0 and len(even) != 0, 'List of zeros is given'
-print('Odd numbers:',*odd)
-print('Even numbers:',*even)
+print('Odd numbers:', *odd)
+print('Even numbers:', *even)
