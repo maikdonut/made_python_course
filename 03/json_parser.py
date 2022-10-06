@@ -16,7 +16,7 @@ def parse_json(json_str: str, required_fields=None, keywords=None, keyword_callb
         if field in json_str:
             for word in keywords:
                 if word in json_str[field]:
-                    cnt = json_str[field].count(word)
+                    cnt = json_str[field].split().count(word)
                     callback(field, stat, cnt)
     return stat
 
@@ -49,3 +49,10 @@ json_str_4 = '{"family1": "MTS BEELINE TELE2 TELE2 ", '\
 required_fields_4 = ["family1", "family2", "family3"]
 keywords_4 = ["MTS"]
 assert parse_json(json_str_4, required_fields_4, keywords_4) == {'family1': 1, 'family2': 1, 'family3': 3}
+
+json_str_5 = '{"words1": "stain color stainless blame ", '\
+              '"words2": "point doubtless state", '\
+              '"words3": "doubt fault stainless"}'
+required_fields_5 = ["words1", "words2", "words3"]
+keywords_5 = ["stain", "doubt"]
+assert parse_json(json_str_5, required_fields_5, keywords_5) == {'words1': 1, 'words2' : 0, 'words3': 1}
