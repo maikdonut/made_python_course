@@ -1,12 +1,12 @@
 import logging
 from collections import deque
 
-logger = logging.getLogger("cache")
 logging.basicConfig(
     filename="cache.log",
     level=logging.INFO,
     format="%(asctime)s\t%(levelname)s\t%(message)s",
 )
+logger = logging.getLogger("cache")
 
 
 class LRUCache:
