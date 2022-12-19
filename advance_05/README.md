@@ -28,6 +28,5 @@ N = 10_000_000
 empl_params = generate_params(N) # 12000000 emploees
 ```
 ### Время создания
-```
 ![image](https://user-images.githubusercontent.com/73718190/208393024-4ea46e81-b69f-4da9-9c25-fc671ec1114a.png)
-```
+
