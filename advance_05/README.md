@@ -29,5 +29,5 @@ empl_params = generate_params(N) # 12000000 emploees
 ```
 ### Время создания
 ```
-![alt text](https://github.com/[maikdonut]/[made_python_course]/blob/[main]/время_создания.jpg?raw=true)
+![Screenshot](screenshots/время_создания.png)
 ```
