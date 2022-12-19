@@ -66,6 +66,12 @@ ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
 ps.print_stats()
 print(s.getvalue())
 ```
+![image](https://user-images.githubusercontent.com/73718190/208393936-f3457fce-28e3-48fd-99d1-237f418d66bb.png)
+#### Профилировние памяти реализовно в profile_memory.py
+![image](https://user-images.githubusercontent.com/73718190/208394143-ebd90911-deb6-4dc8-a028-1342e254b9cf.png)
+### 3. Декоратор профилирования реализован в deco_profile.py
+![image](https://user-images.githubusercontent.com/73718190/208394284-32684f4b-019f-4abf-a5f4-0a6cacd324c0.png)
+
 
 
 
