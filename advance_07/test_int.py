@@ -6,6 +6,7 @@ class TestInt(unittest.TestCase):
         self.assertEqual(int("0o12", 8), 10)
         self.assertEqual(int("0b110", 2), 6)
         self.assertEqual(int("0x1A", 16), 26)
+        self.assertEqual(int("77", 10), 77)
 
     def test_int_from_float(self):
         self.assertEqual(int(9.999999), 9)
@@ -17,6 +18,8 @@ class TestInt(unittest.TestCase):
             int(0b101, 2)
         with self.assertRaises(ValueError):
             int("python")
+        with self.assertRaises(ValueError):
+            (int('5.0'))
 
 
 if __name__ == "__main__":
