@@ -19,7 +19,7 @@ class TestInt(unittest.TestCase):
         with self.assertRaises(ValueError):
             int("python")
         with self.assertRaises(ValueError):
-            (int('5.0'))
+            (int("5.0"))
 
 
 if __name__ == "__main__":
