@@ -1,3 +1,4 @@
+import sys
 import logging
 import logging.config
 from collections import deque
@@ -26,14 +27,17 @@ log_conf = {
     },
     "loggers": {
         "file": {"level": "DEBUG", "handlers": ["file_handler"]},
-        "total": {"level": "INFO", "handlers": ["file_handler", "stream_handler"]},
+        "total": {"level": "DEBUG", "handlers": ["file_handler", "stream_handler"]},
     },
 }
 
 
 logging.config.dictConfig(log_conf)
-file_logger = logging.getLogger("file")
-total_logger = logging.getLogger("total")
+param = sys.argv[1] if len(sys.argv) > 1 else None
+if param == "-s":
+    logger = logging.getLogger("total")
+else:
+    logger = logging.getLogger("file")
 
 
 class LRUCache:
@@ -41,10 +45,10 @@ class LRUCache:
         self.dict = {}
         self.queue = deque([])
         if capacity < 0:
-            total_logger.critical("Capacity must be > 0. Capacity given: %d", capacity)
+            logger.critical("Capacity must be > 0. Capacity given: %d", capacity)
             return
         self.capacity = capacity
-        file_logger.debug("Item created with capacity: %d", capacity)
+        logger.debug("Item created with capacity: %d", capacity)
 
     def update_queue(self, key: str):
         if key in self.queue:
@@ -55,14 +59,14 @@ class LRUCache:
         if key in self.dict.keys():
             self.update_queue(key)
             return self.dict[key]
-        total_logger.info("There is no such: %s", key)
+        logger.info("There is no such: %s", key)
         return None
 
     def set_value(self, key: str, value: str):
         if key not in self.dict.keys() and len(self.dict) >= self.capacity:
             k = self.queue.popleft()
             del self.dict[k]
-            total_logger.info("Key - %s is deleted", key)
+            logger.info("Key - %s is deleted", key)
         self.update_queue(key)
         self.dict[key] = value
-        file_logger.debug("Added key: %s with value: %s", key, value)
+        logger.debug("Added key: %s with value: %s", key, value)
