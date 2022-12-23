@@ -57,7 +57,7 @@ pr.enable()
 def run(params):
     lst_a = [Employee(*i) for i in params]
     lst_slot = [SlotEmployee(*i) for i in params]
-    lst_weak = [WeakRefEmployee(*i) for i in empl_params]
+    lst_weak = [WeakRefEmployee(*i) for i in params]
 
     del lst_a
     del lst_slot
