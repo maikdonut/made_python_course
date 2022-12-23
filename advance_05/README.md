@@ -15,6 +15,13 @@ class SlotEmployee:
         self.name = name
         self.experience = experience
         self.salary = salary
+        
+class WeakRefEmployee: 
+    __slots__ = ('name', 'experience', 'salary', '__weakref__')
+    def __init__(self, name, experience, salary):  
+        self.name = name  
+        self.experience = experience
+        self.salary = salary
 ```
 #### Сгенерируем переменные
 ```py
@@ -29,13 +36,13 @@ N = 10_000_000
 empl_params = generate_params(N) # 12000000 emploees
 ```
 #### Время создания
-![image](https://user-images.githubusercontent.com/73718190/208393024-4ea46e81-b69f-4da9-9c25-fc671ec1114a.png)
+![время_создания](https://user-images.githubusercontent.com/73718190/209364723-cba3179c-de94-4d62-aaa4-7d12fad00c17.png)
 #### Время доступа
-![image](https://user-images.githubusercontent.com/73718190/208393173-02bdcef7-a243-4361-b830-5572c709f7bb.png)
+![время_доступа](https://user-images.githubusercontent.com/73718190/209364744-e4c767a3-b6ad-4669-8236-e3d35b04b360.png)
 ##### Время изменения
-![image](https://user-images.githubusercontent.com/73718190/208393263-9e11d0e1-375d-4c38-bbfb-c747e2ffa279.png)
+![время_изменения](https://user-images.githubusercontent.com/73718190/209364757-48058524-bf2f-4c16-b5b3-59f9198f3b32.png)
 #### Время удаления
-![image](https://user-images.githubusercontent.com/73718190/208393290-a11fbee8-03ed-497b-9b4f-c55c2c2094d7.png)
+![время_удаления](https://user-images.githubusercontent.com/73718190/209364773-3e143966-6d16-49d0-ad75-459f17614559.png)
 
 ### 2. Профилирование
 #### Профилирование вызовов
@@ -50,7 +57,7 @@ pr.enable()
 def run(params):
     lst_a = [Employee(*i) for i in params]
     lst_slot = [SlotEmployee(*i) for i in params]
-    lst_weak = [weakref.ref(obj) for obj in lst_a]
+    lst_weak = [WeakRefEmployee(*i) for i in empl_params]
 
     del lst_a
     del lst_slot
@@ -66,12 +73,13 @@ ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
 ps.print_stats()
 print(s.getvalue())
 ```
-![image](https://user-images.githubusercontent.com/73718190/208393936-f3457fce-28e3-48fd-99d1-237f418d66bb.png)
+![профилирование_вызовов](https://user-images.githubusercontent.com/73718190/209364901-265279cb-e5ba-47e1-8fa0-da6ad8134a9d.png)
 #### Профилировние памяти реализовно в profile_memory.py
-![image](https://user-images.githubusercontent.com/73718190/208394143-ebd90911-deb6-4dc8-a028-1342e254b9cf.png)
+![профилирование_памяти](https://user-images.githubusercontent.com/73718190/209364939-f79d8765-c3a6-4b1b-a7af-17b757e80059.png)
 ### 3. Декоратор профилирования реализован в deco_profile.py
-![image](https://user-images.githubusercontent.com/73718190/208394284-32684f4b-019f-4abf-a5f4-0a6cacd324c0.png)
-
-
+Один вызов функции run()
+![декоратор_профилирования_1](https://user-images.githubusercontent.com/73718190/209364996-c6834f8b-21e2-4567-bc6f-c7af878fce96.png)
+Три вызова функции run() с разными параметрами
+![декоратор_профилирования_2](https://user-images.githubusercontent.com/73718190/209365113-30361cae-aa06-4f8f-96ea-5da9adea01f1.png)
 
 
