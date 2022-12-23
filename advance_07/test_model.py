@@ -17,6 +17,7 @@ class TestModel(unittest.TestCase):
     def test_predict_message_mood(self):
         with patch("model.SomeModel.predict") as m_model_predict:
             m_model_predict.return_value = 0.5
+
             res = predict_message_mood("abc123", SomeModel)
             self.assertEqual(res, "норм")
             expected_calls = [
@@ -25,8 +26,22 @@ class TestModel(unittest.TestCase):
             self.assertEqual(expected_calls, m_model_predict.mock_calls)
 
     @patch("model.SomeModel.predict")
+    def test_predict_message_mood_corner_cases(self, m_model_predict):
+        m_model_predict.side_effect = [0.3, 0.8]
+
+        res = predict_message_mood("Какая-то строка", SomeModel)
+        self.assertEqual(res, "норм")
+
+        res = predict_message_mood("Еще одна строка", SomeModel)
+        self.assertEqual(res, "норм")
+
+        expected_calls = [call("Какая-то строка"), call("Еще одна строка")]
+        self.assertEqual(expected_calls, m_model_predict.mock_calls)
+
+    @patch("model.SomeModel.predict")
     def test_predict_message_mood_side_effect(self, m_model_predict):
         m_model_predict.side_effect = custom_prediction
+
         res = predict_message_mood("100 долларов", SomeModel)
         self.assertEqual(res, "неуд")
 
