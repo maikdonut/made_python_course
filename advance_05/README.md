@@ -25,15 +25,15 @@ class WeakRefEmployee:
 ```
 #### Сгенерируем переменные
 ```py
-def generate_params(n:int)-> list:
+def create_params(amount:int):
     names = ['Alice', 'Bob', 'Peter']
     experience = [1, 2, 5, 10]
-    salary = list(range(1, n, 10))
+    salary = list(range(1, amount, 10))
     params = list(itertools.product(names, experience, salary)) 
     return params
 
 N = 10_000_000
-empl_params = generate_params(N) # 12000000 emploees
+empl_params = create_params(N) # 12000000 emploees
 ```
 #### Время создания
 ![время_создания](https://user-images.githubusercontent.com/73718190/209364723-cba3179c-de94-4d62-aaa4-7d12fad00c17.png)
