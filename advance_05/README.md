@@ -16,6 +16,7 @@ class SlotEmployee:
         self.experience = experience
         self.salary = salary
         
+        
 class WeakRefEmployee: 
     __slots__ = ('name', 'experience', 'salary', '__weakref__')
     def __init__(self, name, experience, salary):  
@@ -81,5 +82,3 @@ print(s.getvalue())
 ![декоратор_профилирования_1](https://user-images.githubusercontent.com/73718190/209364996-c6834f8b-21e2-4567-bc6f-c7af878fce96.png)
 Три вызова функции run() с разными параметрами
 ![декоратор_профилирования_2](https://user-images.githubusercontent.com/73718190/209365113-30361cae-aa06-4f8f-96ea-5da9adea01f1.png)
-
-
