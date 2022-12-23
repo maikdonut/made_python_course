@@ -1,12 +1,10 @@
-import weakref
 import itertools
 import cProfile
 import pstats
-import io
 
 
 class Employee:
-    def __init__(self, name:str, experience:int, salary:int):
+    def __init__(self, name: str, experience: int, salary: int):
         self.name = name
         self.experience = experience
         self.salary = salary
@@ -15,30 +13,49 @@ class Employee:
 class SlotEmployee:
     __slots__ = ("name", "experience", "salary")
 
-    def __init__(self, name:str, experience:int, salary:int):
+    def __init__(self, name: str, experience: int, salary: int):
         self.name = name
         self.experience = experience
         self.salary = salary
 
 
-def profileit(name):
-    def inner(func):
-        def wrapper(*args, **kwargs):
-            prof = cProfile.Profile()
-            retval = prof.runcall(func, *args, **kwargs)
-            prof.dump_stats(name)
-            return retval
+class WeakRefEmployee:
+    __slots__ = ("name", "experience", "salary", "__weakref__")
 
-        return wrapper
-
-    return inner
+    def __init__(self, name, experience, salary):
+        self.name = name
+        self.experience = experience
+        self.salary = salary
 
 
-@profileit("profile_for_func")
+class ProfileDeco:
+    def __init__(self, func):
+        self.func = func
+        self.profiler = cProfile.Profile()
+        self.stats = None
+
+    def __call__(self, *args, **kwargs):
+        result = self.profiler.runcall(self.func, *args, **kwargs)
+        self.stats = pstats.Stats(self.profiler)
+        return result
+
+    def print_stats(self):
+        self.stats.print_stats()
+
+
+def create_params(amount: int):
+    names = ["Alice", "Bob", "Peter"]
+    exp = [1, 2, 5, 10]
+    sal = list(range(1, amount, 10))
+    params = list(itertools.product(names, exp, sal))
+    return params
+
+
+@ProfileDeco
 def run(params):
     lst_a = [Employee(*i) for i in params]
     lst_slot = [SlotEmployee(*i) for i in params]
-    lst_weak = [weakref.ref(obj) for obj in lst_a]
+    lst_weak = [WeakRefEmployee(*i) for i in params]
 
     del lst_a
     del lst_slot
@@ -46,13 +63,7 @@ def run(params):
 
 
 if __name__ == "__main__":
-    N = 10_000_000
-    names = ["Alice", "Bob", "Peter"]
-    exp = [1, 2, 5, 10]
-    sal = list(range(1, N, 10))
-    empl_params = list(itertools.product(names, exp, sal))  # 12000000 emploees
+    N = 100_000
+    empl_params = create_params(N)  # 120000 employes
     run(empl_params)
-    s = io.StringIO()
-    pr = pstats.Stats("profile_for_func")
-    pr.print_stats()
-    print(s.getvalue())
+    run.print_stats()

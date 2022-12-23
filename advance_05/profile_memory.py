@@ -1,10 +1,9 @@
-import weakref
 import itertools
 from memory_profiler import profile
 
 
 class Employee:
-    def __init__(self, name:str, experience:int, salary:int):
+    def __init__(self, name: str, experience: int, salary: int):
         self.name = name
         self.experience = experience
         self.salary = salary
@@ -13,17 +12,34 @@ class Employee:
 class SlotEmployee:
     __slots__ = ("name", "experience", "salary")
 
-    def __init__(self, name:str, experience:int, salary:int):
+    def __init__(self, name: str, experience: int, salary: int):
         self.name = name
         self.experience = experience
         self.salary = salary
+
+
+class WeakRefEmployee:
+    __slots__ = ("name", "experience", "salary", "__weakref__")
+
+    def __init__(self, name, experience, salary):
+        self.name = name
+        self.experience = experience
+        self.salary = salary
+
+
+def create_params(amount: int):
+    names = ["Alice", "Bob", "Peter"]
+    exp = [1, 2, 5, 10]
+    sal = list(range(1, amount, 10))
+    params = list(itertools.product(names, exp, sal))
+    return params
 
 
 @profile
 def run(params):
     lst_a = [Employee(*i) for i in params]
     lst_slot = [SlotEmployee(*i) for i in params]
-    lst_weak = [weakref.ref(obj) for obj in lst_a]
+    lst_weak = [WeakRefEmployee(*i) for i in params]
 
     del lst_a
     del lst_slot
@@ -31,11 +47,6 @@ def run(params):
 
 
 if __name__ == "__main__":
-    N = 10_000_000
-    names = ["Alice", "Bob", "Peter"]
-    exp = [1, 2, 5, 10]
-    sal = list(range(1, N, 10))
-    empl_params = list(
-        itertools.product(names, exp, sal)
-    )  # 12000000 emploees
+    N = 100_000
+    empl_params = create_params(N)  # 120000 employes
     run(empl_params)
