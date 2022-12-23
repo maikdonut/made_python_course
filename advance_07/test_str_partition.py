@@ -47,11 +47,21 @@ class TestPartition(unittest.TestCase):
         self.assertEqual(str1, ("He has written his first ", "book", ""))
 
         str2 = "Код от сейфа: 1234".partition("1234")
-        self.assertEqual(str2, "Код от сейфа: 1234".partition("1234"))
+        self.assertEqual(str2, ("Код от сейфа: ", "1234", ""))
 
         str3 = "ln(e) = 1".partition("1")
         self.assertEqual(str3, ("ln(e) = ", "1", ""))
 
+
+    def test_str_partition_sep_whole_word(self):
+        str1 = "Indivisible string".partition("Indivisible string")
+        self.assertEqual(str1, ("", "Indivisible string", ""))
+
+        str2 = "Python".partition("Python")
+        self.assertEqual(str2, ("", "Python", ""))
+
+        str3 = "The last one".partition("The last one")
+        self.assertEqual(str3, ("", "The last one", ""))
 
 if __name__ == "__main__":
     unittest.main()
